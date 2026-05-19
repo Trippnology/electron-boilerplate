@@ -44,7 +44,7 @@
     "@wdio/mocha-framework": "9.27.1",
     "@wdio/spec-reporter": "9.27.1",
     "babel-loader": "10.1.1",
-    "chai": "4.5.0",
+    "chai": "6.2.2",
     "css-loader": "7.1.4",
     "electron": "32.1.0",
     "electron-builder": "24.13.3",
