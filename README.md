@@ -27,7 +27,7 @@ The application consists of two main folders...
 
 The build process compiles the content of the `src` folder and puts it into the `app` folder, so after the build has finished, your `app` folder contains the full, runnable application. Treat `src` and `app` folders like two halves of one bigger thing.
 
-The drawback of this design is that `app` folder contains some files which should be git-ignored and some which shouldn't (see `.gitignore` file). But this two-folders split makes development builds much faster.
+The drawback of this design is that `app` folder contains some files which should be git-ignored and some which shouldn't (see `.gitignore` file). The compiled outputs `app/app.js` and `app/main.js` (plus source maps) are generated — edit their `src` counterparts, never the generated files. This two-folders split makes development builds much faster.
 
 ## Development
 
@@ -37,11 +37,13 @@ The drawback of this design is that `app` folder contains some files which shoul
 npm start
 ```
 
+This starts a webpack watch process and then launches Electron. On save, webpack rebuilds, but **Electron does not restart automatically** — quit it and run `npm start` again to pick up changes, especially to main-process code (`src/main.js`). In development and test builds, DevTools open automatically.
+
 ### The build pipeline
 
 Build process uses [Webpack](https://webpack.js.org/). The entry-points are `src/main.js` and `src/app.js`. Webpack will follow all `import` statements starting from those files and compile code of the whole dependency tree into one `.js` file for each entry point.
 
-[Babel](http://babeljs.io/) is also utilised, but mainly for its great error messages. Electron under the hood runs latest Chromium, hence most of the new JavaScript features are already natively supported.
+[Babel](https://babeljs.io/) is also utilised, but mainly for its great error messages. Electron under the hood runs latest Chromium, hence most of the new JavaScript features are already natively supported.
 
 ### Environments
 
@@ -66,21 +68,23 @@ Run all tests:
 npm test
 ```
 
+This bundles the unit and e2e specs with webpack, then runs everything through [WebdriverIO](https://webdriver.io/) using the [`wdio-electron-service`](https://webdriver.io/docs/desktop-testing/electron/) — it launches the app with the local Electron binary (`app/main.js`), no packaged build needed. Specs are collected from `test/specs/`, `e2e/*.e2e.js`, and the bundled unit specs.
+
 ### Unit
 
 ```
 npm run unit
 ```
 
-Using [electron-mocha](https://github.com/jprichardson/electron-mocha) test runner with the [Chai](http://chaijs.com/api/assert/) assertion library. You can put your spec files wherever you want within the `src` directory, just name them with the `.spec.js` extension.
+Using [electron-mocha](https://github.com/jprichardson/electron-mocha) test runner with the [Chai](https://chaijs.com/api/assert/) assertion library. You can put your spec files wherever you want within the `src` directory, just name them with the `.spec.js` extension.
 
 ### End to end
 
-```
-npm run e2e
-```
+E2E specs live in `e2e/*.e2e.js` (plus `test/specs/`). They run through the same WebdriverIO setup as above — there is no separate standalone runner. To run just the browser-driven tests without the unit bundle:
 
-Using [Mocha](https://mochajs.org/) and [Spectron](http://electron.atom.io/spectron/). This task will run all files in `e2e` directory with `.e2e.js` extension.
+```
+npm run pree2e && npm run wdio
+```
 
 ## Making a release
 
