@@ -12,10 +12,10 @@ import createWindow from './helpers/window';
 
 import env from 'env';
 
-if (env.name !== 'production') {
-  const userDataPath = app.getPath('userData');
-  app.setPath('userData', `${userDataPath} (${env.name})`);
-  console.log('User data path set to:', app.getPath('userData'));
+let redirectUserData = false;
+
+if (env.name === 'development') {
+  redirectUserData = true;
 }
 
 const setApplicationMenu = () => {
@@ -36,6 +36,12 @@ const initIpc = () => {
 };
 
 app.on('ready', () => {
+  if (redirectUserData) {
+    const userDataPath = app.getPath('userData');
+    app.setPath('userData', `${userDataPath} (${env.name})`);
+    console.log('User data path set to:', app.getPath('userData'));
+  }
+
   setApplicationMenu();
   initIpc();
 
