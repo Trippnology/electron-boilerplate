@@ -58,5 +58,11 @@
     "webpack-cli": "7.2.3",
     "webpack-merge": "6.0.1",
     "webpack-node-externals": "3.0.0"
+  },
+  "allowScripts": {
+    "edgedriver": true,
+    "electron-winstaller": true,
+    "esbuild": true,
+    "geckodriver": true
   }
 }
