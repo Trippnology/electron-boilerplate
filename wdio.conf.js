@@ -53,6 +53,9 @@ exports.config = {
             // Electron service options
             // see https://webdriver.io/docs/desktop-testing/electron/configuration/#service-options
             'wdio:electronServiceOptions': {
+                // run the app via the local Electron binary and compiled main entry
+                // instead of requiring a packaged dist/ build
+                appEntryPoint: './app/main.js',
                 // custom application args
                 appArgs: [],
             },

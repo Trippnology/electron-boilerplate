@@ -1,4 +1,4 @@
-import { browser } from '@wdio/globals';
+import { $ } from '@wdio/globals';
 import { expect } from 'chai';
 
 describe('Hello World', () => {
